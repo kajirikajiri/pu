@@ -1,0 +1,25 @@
+@startuml
+title authログイン wordpressの場合
+actor enduser as en
+' participant locked_frontend as f
+participant locked_api as ap
+participant locked_auth as au
+participant locked_extension as ex
+participant wordpress as w
+en->au:input email, password and submit
+au->ap:send params
+alt if success and return single app
+note left
+アプリが一つの場合、リダイレクト先
+アプリが複数の場合、アプリ一覧を返す
+end note
+ap->au:return 1 app
+else else success and return some apps
+ap->au:return some apps
+au->en:show some apps
+en->au:click app
+end
+au->ex:アプリへのログインを要求
+ex->w:ログイン画面を開き、ログインを行う
+w->en:ログイン成功画面を表示
+@enduml
